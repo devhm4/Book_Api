@@ -1,4 +1,5 @@
 using books.Enitity;
+using books.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,10 @@ var configuration = new ConfigurationBuilder()
 // Configure services
 builder.Services.AddDbContext<BookDbContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+
+
 
 builder.Services.AddControllers();
 
