@@ -2,7 +2,7 @@ using books.Enitity;
 using books.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace books.Repository
+namespace books.Repository.book
 {
     public class BookRepository : IBookRepository
     {
@@ -13,10 +13,25 @@ namespace books.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<BookModel>> GetAllBooksAsync()
+
+
+        public async Task<IEnumerable<BookModel>> GetAllBooksAsync(string search = null)
         {
-            return await _context.Books.ToListAsync();
+            //  var query = _context.Books.AsQueryable();
+
+            // if (!string.IsNullOrEmpty(search))
+            // {
+            //     var lowerCaseSearch = search.ToLower();
+            //     query = query.Where(b => b.name.ToLower().Contains(lowerCaseSearch));
+            // }
+            return await _context.Books.Include(b => b.Categories).ToListAsync();
+
+            //  return await query.Include(b => b.Categories).ToListAsync();
+
         }
+
+
+
 
         public async Task<BookModel> GetBookByIdAsync(Guid id)
         {

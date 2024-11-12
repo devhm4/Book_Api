@@ -1,12 +1,12 @@
+using books.Mapper;
 using books.Model;
 using books.Repository;
+using books.Repository.book;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace books.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/books")]
     [ApiController]
     public class BookController : ControllerBase
     {
@@ -17,11 +17,15 @@ namespace books.Controllers
             _bookRepository = bookRepository;
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> GetBooks()
+        public async Task<IActionResult> GetBooks([FromQuery] string search = null)
         {
-            var books = await _bookRepository.GetAllBooksAsync();
-            return Ok(books);
+            var books = await _bookRepository.GetAllBooksAsync(query: search);
+            var bookDto = books.Select(s => s.toBookDto()).ToList();
+
+
+            return Ok(bookDto);
         }
 
         [HttpGet("{id}")]

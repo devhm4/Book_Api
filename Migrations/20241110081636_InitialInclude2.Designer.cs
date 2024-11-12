@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using books.Enitity;
@@ -11,9 +12,11 @@ using books.Enitity;
 namespace books.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    partial class BookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241110081636_InitialInclude2")]
+    partial class InitialInclude2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,19 +25,19 @@ namespace books.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BookCategory", b =>
+            modelBuilder.Entity("BookModelCategory", b =>
                 {
-                    b.Property<Guid>("BookModelId")
+                    b.Property<Guid>("Booksid")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid>("CategoriesId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("BookModelId", "CategoryId");
+                    b.HasKey("Booksid", "CategoriesId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoriesId");
 
-                    b.ToTable("BookCategory");
+                    b.ToTable("BookModelCategory");
                 });
 
             modelBuilder.Entity("books.Model.BookModel", b =>
@@ -60,7 +63,7 @@ namespace books.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("books.Model.CategoryModel", b =>
+            modelBuilder.Entity("books.Model.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,17 +78,17 @@ namespace books.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("BookCategory", b =>
+            modelBuilder.Entity("BookModelCategory", b =>
                 {
                     b.HasOne("books.Model.BookModel", null)
                         .WithMany()
-                        .HasForeignKey("BookModelId")
+                        .HasForeignKey("Booksid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("books.Model.CategoryModel", null)
+                    b.HasOne("books.Model.Category", null)
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

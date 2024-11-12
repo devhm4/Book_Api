@@ -1,11 +1,10 @@
 using System;
-using books.Dto;
+using books.Model;
 
-namespace books.Model;
+namespace books.Dto;
 
-public class BookModel
+public class BookDto
 {
-
     public Guid id { get; set; }
 
     public string name { get; set; } = string.Empty;
@@ -13,6 +12,7 @@ public class BookModel
     public string author { get; set; } = string.Empty;
 
     public string description { get; set; } = string.Empty;
-    public List<CategoryModel> Categories { get; set; } = new List<CategoryModel>();
+    public List<CategoryDto> Categories { get; set; } = new List<CategoryDto>();
+
 
 }
