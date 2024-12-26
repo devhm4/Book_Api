@@ -1,7 +1,8 @@
-using books.Mapper;
+using AutoMapper;
+using books.Dto;
 using books.Model;
-using books.Repository;
 using books.Repository.book;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
 namespace books.Controllers
@@ -11,21 +12,22 @@ namespace books.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IMapper mapper;
 
-        public BookController(IBookRepository bookRepository)
+        public BookController(IBookRepository bookRepository, IMapper mapper)
         {
             _bookRepository = bookRepository;
+            this.mapper = mapper;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> GetBooks([FromQuery] string search = null)
+        public async Task<IActionResult> GetBooks()
         {
-            var books = await _bookRepository.GetAllBooksAsync(query: search);
-            var bookDto = books.Select(s => s.toBookDto()).ToList();
+            var books = await _bookRepository.GetAllBooksAsync();
 
-
-            return Ok(bookDto);
+            var response = mapper.Map<IEnumerable<BookDto>>(books);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -51,12 +53,15 @@ namespace books.Controllers
             {
                 name = book.name,
                 author = book.author,
-                description = book.description
+                description = book.description,
+                categoryId = book.categoryId
             };
 
             await _bookRepository.AddBookAsync(newBook);
+
             return CreatedAtAction(nameof(GetBookById), new { id = newBook.id }, newBook);
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(Guid id, [FromBody] UpdateBookModel book)

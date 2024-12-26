@@ -15,18 +15,11 @@ namespace books.Repository.book
 
 
 
-        public async Task<IEnumerable<BookModel>> GetAllBooksAsync(string search = null)
+        public async Task<IEnumerable<BookModel>> GetAllBooksAsync()
         {
-            //  var query = _context.Books.AsQueryable();
 
-            // if (!string.IsNullOrEmpty(search))
-            // {
-            //     var lowerCaseSearch = search.ToLower();
-            //     query = query.Where(b => b.name.ToLower().Contains(lowerCaseSearch));
-            // }
-            return await _context.Books.Include(b => b.Categories).ToListAsync();
+            return await _context.Books.ToListAsync();
 
-            //  return await query.Include(b => b.Categories).ToListAsync();
 
         }
 

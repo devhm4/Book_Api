@@ -1,8 +1,7 @@
-using books.Mapper;
+using AutoMapper;
 using books.Model;
-using books.Repository;
 using books.Repository.category;
-using Microsoft.AspNetCore.Http;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
 namespace books.Controller
@@ -13,22 +12,25 @@ namespace books.Controller
     {
 
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper mapper;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public CategoryController(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetCatogories()
         {
             var categories = await _categoryRepository.GetAllCategoriesAsync();
-            var categoryDto = categories.Select(s => s.toCategoryDto()).ToList();
-            if (categoryDto == null)
+            var response = mapper.Map<IEnumerable<Dto.CategoryDto>>(categories);
+            if (categories == null)
             {
                 return NotFound();
+
             }
-            return Ok(categoryDto);
+            return Ok(categories);
         }
 
         [HttpPost]
@@ -49,17 +51,6 @@ namespace books.Controller
             await _categoryRepository.DeleteCategoryAsync(id);
             return NoContent();
         }
-
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> GetCategoryById(Guid id)
-        // {
-        //     var category = await _categoryRepository.GetCategoryByIdAsync(id);
-        //     if (category == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     return Ok(category);
-        // }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(CategoryModel category)

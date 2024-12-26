@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/hhhff/Desktop/books/books.csproj": {}
+    "/Users/hhhff/Desktop/asp projects/books/books.csproj": {}
   },
   "projects": {
-    "/Users/hhhff/Desktop/books/books.csproj": {
+    "/Users/hhhff/Desktop/asp projects/books/books.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/hhhff/Desktop/books/books.csproj",
+        "projectUniqueName": "/Users/hhhff/Desktop/asp projects/books/books.csproj",
         "projectName": "books",
-        "projectPath": "/Users/hhhff/Desktop/books/books.csproj",
+        "projectPath": "/Users/hhhff/Desktop/asp projects/books/books.csproj",
         "packagesPath": "/Users/hhhff/.nuget/packages/",
-        "outputPath": "/Users/hhhff/Desktop/books/obj/",
+        "outputPath": "/Users/hhhff/Desktop/asp projects/books/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/hhhff/.nuget/NuGet/NuGet.Config"
@@ -43,6 +43,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Mapster": {
+              "target": "Package",
+              "version": "[7.4.1-pre01, )"
+            },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[8.0.10, )"
