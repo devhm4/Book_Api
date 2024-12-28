@@ -25,12 +25,12 @@ namespace books.Controller
         {
             var categories = await _categoryRepository.GetAllCategoriesAsync();
             var response = mapper.Map<IEnumerable<Dto.CategoryDto>>(categories);
-            if (categories == null)
+            if (response == null)
             {
                 return NotFound();
 
             }
-            return Ok(categories);
+            return Ok(response);
         }
 
         [HttpPost]

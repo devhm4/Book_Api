@@ -20,7 +20,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<IEnumerable<CategoryModel>> GetAllCategoriesAsync()
     {
-        return await _context.categories.ToListAsync();
+        return await _context.categories.Include("book").ToListAsync();
     }
 
 

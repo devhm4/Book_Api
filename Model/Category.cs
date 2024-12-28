@@ -8,5 +8,7 @@ public class CategoryModel
 
     public string Name { get; set; } = string.Empty;
 
+    public BookModel book { get; set; }
+
 
 }

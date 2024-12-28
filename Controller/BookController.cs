@@ -1,8 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using books.Dto;
 using books.Model;
 using books.Repository.book;
-using Mapster;
+using books.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace books.Controllers
@@ -42,12 +43,9 @@ namespace books.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> AddBook([FromBody] AddBookModel book)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             var newBook = new BookModel
             {
