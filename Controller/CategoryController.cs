@@ -1,7 +1,7 @@
 using AutoMapper;
 using books.Model;
 using books.Repository.category;
-using Mapster;
+using books.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace books.Controller
@@ -34,14 +34,18 @@ namespace books.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCategory(CategoryModel category)
+        [ValidateModel]
+        public async Task<IActionResult> AddCategory([FromBody] AddCategory category)
+
+
         {
-            if (!ModelState.IsValid)
+            var newCategore = new CategoryModel
             {
-                return BadRequest(ModelState);
-            }
-            await _categoryRepository.AddCategoryAsync(category);
-            return CreatedAtAction(nameof(GetCatogories), new { id = category.Id }, category);
+                Name = category.name
+            };
+
+            await _categoryRepository.AddCategoryAsync(newCategore);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
