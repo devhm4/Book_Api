@@ -52,7 +52,7 @@ namespace books.Controllers
                 name = book.name,
                 author = book.author,
                 description = book.description,
-                categoryId = book.categoryId
+
             };
 
             await _bookRepository.AddBookAsync(newBook);

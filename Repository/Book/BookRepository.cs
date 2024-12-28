@@ -18,7 +18,7 @@ namespace books.Repository.book
         public async Task<IEnumerable<BookModel>> GetAllBooksAsync()
         {
 
-            return await _context.Books.ToListAsync();
+            return await _context.Books.Include("category").ToListAsync();
 
 
         }

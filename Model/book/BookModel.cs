@@ -13,7 +13,8 @@ public class BookModel
     public string author { get; set; } = string.Empty;
 
     public string description { get; set; } = string.Empty;
-    public Guid categoryId { get; set; }
+    public CategoryModel category { get; set; }
+
 
 }
 
