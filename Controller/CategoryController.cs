@@ -34,7 +34,7 @@ namespace books.Controller
         }
 
         [HttpPost]
-        [ValidateModel]
+    
         public async Task<IActionResult> AddCategory([FromBody] AddCategory category)
 
 

@@ -23,14 +23,15 @@ namespace books.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetBooks()
+        public async Task<IActionResult> GetBooks([FromQuery] string? search = null, [FromQuery] string? orderBy = null)
+
         {
-            var books = await _bookRepository.GetAllBooksAsync();
+            var books = await _bookRepository.GetAllBooksAsync(search, orderBy);
 
             var response = mapper.Map<IEnumerable<BookDto>>(books);
             return Ok(response);
-        }
 
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBookById(Guid id)
         {
@@ -43,7 +44,6 @@ namespace books.Controllers
         }
 
         [HttpPost]
-        [ValidateModel]
         public async Task<IActionResult> AddBook([FromBody] AddBookModel book)
         {
 
@@ -52,22 +52,18 @@ namespace books.Controllers
                 name = book.name,
                 author = book.author,
                 description = book.description,
-
+                categoryId = book.categoryId
             };
 
             await _bookRepository.AddBookAsync(newBook);
 
-            return CreatedAtAction(nameof(GetBookById), new { id = newBook.id }, newBook);
+            //return CreatedAtAction(nameof(GetBookById), new { id = newBook.id }, newBook);
+            return Ok(newBook);
         }
-
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(Guid id, [FromBody] UpdateBookModel book)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             var existingBook = await _bookRepository.GetBookByIdAsync(id);
             if (existingBook == null)

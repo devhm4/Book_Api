@@ -15,12 +15,21 @@ namespace books.Repository.book
 
 
 
-        public async Task<IEnumerable<BookModel>> GetAllBooksAsync()
+        public async Task<IEnumerable<BookModel>> GetAllBooksAsync(string? search = null, string? orderBy = null)
         {
 
-            return await _context.Books.Include("category").ToListAsync();
 
+            var query = _context.Books.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(x => x.name.Contains(search) || x.author.Contains(search));
+            }
 
+            if (!string.IsNullOrEmpty(orderBy))
+            {
+                query = query.OrderBy(x => x.name);
+            }
+            return await query.ToListAsync();
         }
 
 
