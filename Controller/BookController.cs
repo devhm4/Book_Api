@@ -23,10 +23,11 @@ namespace books.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetBooks([FromQuery] string? search = null, [FromQuery] string? orderBy = null)
+        public async Task<IActionResult> GetBooks([FromQuery] string? search = null, [FromQuery] bool? orderBy = null, [FromQuery] int pageSize = 1, [FromQuery] int pageNumber = 1)
+
 
         {
-            var books = await _bookRepository.GetAllBooksAsync(search, orderBy);
+            var books = await _bookRepository.GetAllBooksAsync(search, orderBy, pageSize, pageNumber);
 
             var response = mapper.Map<IEnumerable<BookDto>>(books);
             return Ok(response);
