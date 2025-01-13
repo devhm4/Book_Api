@@ -1,7 +1,6 @@
 using AutoMapper;
 using books.Model;
 using books.Repository.category;
-using books.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace books.Controller
@@ -34,7 +33,7 @@ namespace books.Controller
         }
 
         [HttpPost]
-    
+
         public async Task<IActionResult> AddCategory([FromBody] AddCategory category)
 
 
@@ -63,5 +62,6 @@ namespace books.Controller
             return NoContent();
         }
 
+       
     }
 }

@@ -17,17 +17,13 @@ namespace books.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("books.Model.BookModel", b =>
+            modelBuilder.Entity("books.Model.AddBookModel", b =>
                 {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<string>("author")
                         .IsRequired()
                         .HasColumnType("text");
@@ -41,11 +37,33 @@ namespace books.Migrations
 
                     b.Property<string>("name")
                         .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.ToTable("AddBookModel");
+                });
+
+            modelBuilder.Entity("books.Model.BookModel", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("author")
                         .HasColumnType("text");
 
-                    b.HasKey("id");
+                    b.Property<Guid>("categoryId")
+                        .HasColumnType("uuid");
 
-                    b.HasIndex("categoryId");
+                    b.Property<string>("description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("id");
 
                     b.ToTable("Books");
                 });
@@ -57,23 +75,11 @@ namespace books.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("categories");
-                });
-
-            modelBuilder.Entity("books.Model.BookModel", b =>
-                {
-                    b.HasOne("books.Model.CategoryModel", "category")
-                        .WithMany()
-                        .HasForeignKey("categoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("category");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,6 +14,4 @@ public class BookDto
     public string description { get; set; } = string.Empty;
     public Guid categoryId { get; set; }
 
-
-
 }

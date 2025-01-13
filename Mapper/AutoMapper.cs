@@ -11,6 +11,8 @@ public class AutoMapperProfiles : Profile
     {
         CreateMap<BookModel, BookDto>().ReverseMap();
         CreateMap<CategoryModel, CategoryDto>().ReverseMap();
+        CreateMap<UpdateBookDto, BookModel>()
+        .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
     }
 }
 

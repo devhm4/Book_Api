@@ -1,8 +1,7 @@
 using System;
-using System.Net.Security;
+using books.Dto;
 using books.Enitity;
 using books.Model;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 namespace books.Repository.category;
 
@@ -50,7 +49,30 @@ public class CategoryRepository : ICategoryRepository
         await _context.SaveChangesAsync();
     }
 
+     public async Task<Dto.CategoryWithBooksDto> GetCategoryWithBooksAsync(Guid categoryId)
+    {
+        var categoryWithBooks = await _context.categories
+            .Where(c => c.Id == categoryId)
+            .Select(c => new Dto.CategoryWithBooksDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Books = _context.Books
+                    .Where(b => b.categoryId == c.Id)
+                    .Select(b => new BookDto
+                    {
+                        id = b.id,
+                        name = b.name ?? string.Empty,
+                        author = b.author ?? string.Empty,
+                        description = b.description ?? string.Empty,
+                        categoryId = b.categoryId
+                    }).ToList()
+            }).FirstOrDefaultAsync();
 
+        return categoryWithBooks!;
+    }
+
+   
 }
 
 

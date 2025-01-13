@@ -1,15 +1,15 @@
-using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using books.Dto;
 using books.Model;
 using books.Repository.book;
-using books.Validation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace books.Controllers
 {
     [Route("api/v1/books")]
     [ApiController]
+    //[Authorize]
     public class BookController : ControllerBase
     {
         private readonly IBookRepository _bookRepository;
@@ -23,7 +23,7 @@ namespace books.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetBooks([FromQuery] string? search = null, [FromQuery] bool? orderBy = null, [FromQuery] int pageSize = 1, [FromQuery] int pageNumber = 1)
+        public async Task<IActionResult> GetBooks([FromQuery] string? search = null, [FromQuery] bool? orderBy = null, [FromQuery] int pageSize = 10, [FromQuery] int pageNumber = 1)
 
 
         {
@@ -58,27 +58,28 @@ namespace books.Controllers
 
             await _bookRepository.AddBookAsync(newBook);
 
-            //return CreatedAtAction(nameof(GetBookById), new { id = newBook.id }, newBook);
-            return Ok(newBook);
+            return CreatedAtAction(nameof(GetBookById), new { id = newBook.id }, newBook);
+
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBook(Guid id, [FromBody] UpdateBookModel book)
+        public async Task<IActionResult> UpdateBook(Guid id, [FromBody] UpdateBookDto book)
         {
-
+            // Fetch the existing book by ID
             var existingBook = await _bookRepository.GetBookByIdAsync(id);
             if (existingBook == null)
             {
                 return NotFound();
             }
 
-            existingBook.name = book.name;
-            existingBook.author = book.author;
-            existingBook.description = book.description;
+            // Map other properties but do not modify the ID
+            mapper.Map(book, existingBook);
 
+            // Save the updated entity
             await _bookRepository.UpdateBookAsync(existingBook);
-            return NoContent();
+            return Ok(existingBook);
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(Guid id)

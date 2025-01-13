@@ -17,10 +17,9 @@ namespace books.Repository.book
 
         public async Task<IEnumerable<BookModel>> GetAllBooksAsync(string? search = null, bool? orderBy = null, int pageSize = 1, int pageNumber = 1)
         {
-
-
-
             var query = _context.Books.AsQueryable();
+
+
             if (!string.IsNullOrEmpty(search))
             {
                 query = query.Where(x => x.name.Contains(search) || x.author.Contains(search));
